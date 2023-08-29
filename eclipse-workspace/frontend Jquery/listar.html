@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Dados</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="menu">
+        <a href="/index.html" class="menu-link">Cadastrar Usuários</a>
+        <a href="/listar.html" class="menu-link">Listar Usuários</a>
+        <a href="/associacao.html" class="menu-link">Associação de Chefes e Subordinados</a>
+    </div>
+
+    <h1 class="data-title">Listagem de Dados</h1>
+    <ul id="data-list" class="data-list"></ul>
+
+    <script>
+        $(document).ready(function () {
+            $.get("http://localhost:8080", function (data) {
+                var dataList = $("#data-list");
+
+                data.forEach(function (item) {
+                    var listItem = $("<li>").addClass("user-item").html(`
+                        <div class="main-user-info">
+                        <div class="user-info">
+                            <span class="user-id">ID: ${item.id}</span>
+                            <span class="user-name">Nome: ${item.nome}</span>
+                            <span class="user-score">Score da Senha: ${item.stringScore}</span>
+                        </div>
+                        <div class="score-bar">
+                            <div class="score-level"></div>
+                        </div>
+                        </div>
+                    `);
+
+                    dataList.append(listItem);
+
+                    updateScoreBar(listItem, item.score);
+                });
+            });
+
+            function updateScoreBar(listItem, score) {
+                var scoreBar = listItem.find(".score-bar");
+                var scoreLevel = listItem.find(".score-level");
+
+                scoreBar.removeClass("score-weak score-moderate score-strong");
+
+                if (score >= 80) {
+                    scoreBar.addClass("score-strong");
+                } else if (score >= 50) {
+                    scoreBar.addClass("score-moderate");
+                } else {
+                    scoreBar.addClass("score-weak");
+                }
+
+                scoreLevel.css("width", score + "%");
+            }
+
+        });
+    </script>
+</body>
+
+</html>

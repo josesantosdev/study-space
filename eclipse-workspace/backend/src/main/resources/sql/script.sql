@@ -1,0 +1,10 @@
+CREATE TABLE db.COLABORADOR (
+	ID INTEGER auto_increment NOT null primary key ,
+	NOME varchar(300) NULL,
+	SENHA varchar(1000) NULL,
+	SCORE INTEGER NULL,
+	ID_CHEFE INTEGER NULL
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_0900_ai_ci;

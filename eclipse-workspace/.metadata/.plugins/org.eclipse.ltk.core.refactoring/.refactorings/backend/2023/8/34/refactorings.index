@@ -1,0 +1,6 @@
+1692842712258	Rename type 'BackendController'
+1692842783398	Delete element
+1692842839271	Delete element
+1692945235307	Extract local variable 'chefe'
+1692945261454	Extract local variable 'subordinado'
+1692990786432	Infer generic type arguments

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo jQuery com CDN</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#registerForm").submit(function(event) {
+                event.preventDefault();
+
+                var name = $("#name").val();
+                var senha = $("#senha").val();
+
+                var data = {
+                    "nome": name,
+                    "senha": senha
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/",
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function(response) {
+                        console.log("Dados enviados com sucesso!", response);
+                        showSuccessAlert();
+                        clearInputs();
+                    },
+                    error: function(error) {
+                        console.error("Erro ao enviar dados:", error);
+                        showErrorAlert();
+                    }
+                });
+            });
+
+            function showSuccessAlert() {
+                $("#successAlert").fadeIn().delay(2000).fadeOut();
+            }
+
+            function showErrorAlert() {
+                $("#errorAlert").fadeIn().delay(2000).fadeOut();
+            }
+
+            function clearInputs() {
+                $("#name").val("");
+                $("#senha").val("");
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="menu">
+        <a href="/index.html" class="menu-link">Cadastrar Usuários</a>
+        <a href="/listar.html" class="menu-link">Listar Usuários</a>
+        <a href="/associacao.html" class="menu-link">Associação de Chefes e Subordinados</a>
+    </div>
+    
+    <div class="container">
+        <h1 class="data-title">Cadastro de Colaborador</h1>
+        <form id="registerForm">
+            <div>
+                <label for="name">Nome:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div>
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" required>
+            </div>
+            <button type="submit">Salvar</button>
+        </form>
+        <div id="successAlert" class="alert success-alert">Salvo com sucesso!</div>
+        <div id="errorAlert" class="alert error-alert">Erro ao salvar!</div>
+    </div>
+</body>
+</html>

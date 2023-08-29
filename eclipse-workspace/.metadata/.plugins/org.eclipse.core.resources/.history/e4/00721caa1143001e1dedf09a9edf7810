@@ -1,0 +1,150 @@
+package com.backend.business;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
+import java.util.HashSet;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.backend.dto.ChefeSubordinado;
+import com.backend.entity.ColaboradorEntity;
+import com.backend.repository.ColaboradorRepository;
+
+@Service
+public class ColaboradorBusiness {
+
+	@Autowired
+	ColaboradorRepository colaboradorRepository;
+
+	public ColaboradorEntity findById(Integer id) {
+		return colaboradorRepository.findById(id).get();
+	}
+
+	public List<ColaboradorEntity> findAll() {
+		return colaboradorRepository.findAll();
+	}
+
+	public ColaboradorEntity assosiaSubordinado(ChefeSubordinado chefeSubordinadoDTO) {
+		ColaboradorEntity chefe = colaboradorRepository.findById(chefeSubordinadoDTO.getIdChefe()).orElse(null);
+		ColaboradorEntity subordinado = colaboradorRepository.findById(chefeSubordinadoDTO.getIdSubordinado());
+		return null;
+	}
+
+	public ColaboradorEntity save(ColaboradorEntity colaboradorEntity) throws Exception {
+		KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+		keyGenerator.init(128);
+		SecretKey secretKey = keyGenerator.generateKey();
+
+		colaboradorEntity.setScore(calculatePasswordStrength(colaboradorEntity.getSenha()));
+		colaboradorEntity.setStringScore(evaluatePasswordStrength(colaboradorEntity.getSenha()));
+		colaboradorEntity.setSenha(encrypt(colaboradorEntity.getSenha(), secretKey));
+		return colaboradorRepository.save(colaboradorEntity);
+	}
+
+	public static String encrypt(String data, SecretKey secretKey) throws Exception {
+		Cipher cipher = Cipher.getInstance("AES");
+		cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+		byte[] encryptedBytes = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
+		return Base64.getEncoder().encodeToString(encryptedBytes);
+	}
+
+	public static String evaluatePasswordStrength(String password) {
+		int score = calculatePasswordStrength(password);
+
+		if (score >= 100) {
+			return "Muito Forte";
+		} else if (score >= 80) {
+			return "Forte";
+		} else if (score >= 60) {
+			return "Médio";
+		} else if (score >= 40) {
+			return "Fraco";
+		} else {
+			return "Muito Fraco";
+		}
+	}
+
+	private static Integer calculatePasswordStrength(String password) {
+		int score = 0;
+
+		// Comprimento mínimo
+		if (password.length() >= 8) {
+			score += 10;
+		}
+
+		// Presença de caracteres especiais
+		if (containsSpecialCharacter(password)) {
+			score += 20;
+		}
+
+		// Presença de letras maiúsculas e minúsculas
+		if (containsUpperCase(password) && containsLowerCase(password)) {
+			score += 20;
+		}
+
+		// Presença de números
+		if (containsNumber(password)) {
+			score += 10;
+		}
+
+		// Caracteres não repetidos
+		HashSet<Character> uniqueChars = new HashSet<>();
+		for (char c : password.toCharArray()) {
+			uniqueChars.add(c);
+		}
+		if (uniqueChars.size() >= password.length() * 0.8) {
+			score += 10;
+		}
+
+		// Diversidade de tipos de caracteres
+		if (score >= 60) {
+			score += 30;
+		}
+
+		return score;
+	}
+
+	private static boolean containsSpecialCharacter(String password) {
+		String specialCharacters = "!@#\\$%^&*()_+-=[]{};':\"\\|,.<>/?";
+		for (char c : specialCharacters.toCharArray()) {
+			if (password.contains(String.valueOf(c))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean containsUpperCase(String password) {
+		for (char c : password.toCharArray()) {
+			if (Character.isUpperCase(c)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean containsLowerCase(String password) {
+		for (char c : password.toCharArray()) {
+			if (Character.isLowerCase(c)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean containsNumber(String password) {
+		for (char c : password.toCharArray()) {
+			if (Character.isDigit(c)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+}

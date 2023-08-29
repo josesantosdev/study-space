@@ -1,0 +1,133 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.menu {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 10px 10px 10 px;
+}
+
+.menu a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.menu a:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    margin-bottom: 20px;
+    margin-left: 40px;
+}
+
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.alert {
+    display: none;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.success-alert {
+    background-color: #66bb6a;
+    color: #fff;
+}
+
+.error-alert {
+    background-color: #ef5350;
+    color: #fff;
+}
+.data-list {
+    margin: 0 auto; /* Centraliza horizontalmente */
+    width: 60%;
+    padding: 0;
+    list-style: none;
+}
+
+.main-user-info {
+    display: flex;
+    flex-direction: row;
+}
+
+.score-bar {
+    width: 30%;
+    height: 1.2em; /* Altura ajustada para acomodar o tamanho do texto */
+    border-radius: 5px;
+    margin-top: 10px;
+    overflow: hidden;
+    background-color: #e0e0e0; /* Cor de fundo da barra */
+}
+
+.score-level {
+    border-radius: 5px;
+    transition: width 0.5s;
+}
+
+.score-weak {
+    background-color: #ef5350;
+    width: 10%;
+}
+
+.score-moderate {
+    background-color: #FFA726;
+    width: 20%;
+}
+
+.score-strong {
+    background-color: #66bb6a;
+    width: 30%;
+}
+
+
+
+.user-info {
+    flex-grow: 1; /* Permite que o texto ocupe o espaço restante na barra */
+    padding: 0.5em; /* Espaçamento interno para melhor aparência */
+}

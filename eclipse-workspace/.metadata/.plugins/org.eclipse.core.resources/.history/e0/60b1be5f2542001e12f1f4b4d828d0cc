@@ -1,0 +1,24 @@
+package com.backend.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
+public class ColaboradorEntity {
+	@Id
+	@Column(name="ID")
+	Integer id;
+	
+	@Column(name="NOME")
+	String nome;
+	
+	@Column(name="SENHA")
+	String senha;
+	
+	@Column(name="SCORE")
+	Integer score;
+	
+	@Column(name="ID_CHEFE")
+	ColaboradorEntity chefe;
+}
